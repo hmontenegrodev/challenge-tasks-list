@@ -7,7 +7,6 @@ export interface AuthenticatedRequest extends Request {
 }
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-
     const token = req.headers['authorization'];
 
     if (!token || !token.startsWith('Bearer ')) {
@@ -22,7 +21,6 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
         next();
     } catch (error) {
         return res.status(403).json({ message: 'Token no valido' });
-
     }
 
 }
