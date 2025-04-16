@@ -5,7 +5,6 @@ import { CreateTask } from "../../application/use-cases/task/CreateTask";
 import { GetTasks } from "../../application/use-cases/task/GetTasks";
 import { TaskService } from "../../application/services/TaskService";
 
-
 const taskRepository = new FirebaseTaskRepository();
 const taskService = new TaskService(taskRepository);
 
@@ -14,8 +13,8 @@ export class TaskController {
         try {
             const { title, description, userId } = req.body;
             if (!userId) {
-                 res.status(401).json({ message: "Unauthorized" });
-                 return
+                res.status(401).json({ message: "Unauthorized" });
+                return
             }
 
             const newTask = {
@@ -48,4 +47,25 @@ export class TaskController {
             res.status(500).json({ message: (err as Error).message });
         }
     }
+
+    static async updateTask(req: Request, res: Response): Promise<void> {
+        try {
+            const id = req.params.id;
+            const task = req.body;
+            await taskService.update(id, task);
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ error: 'Error al actualizar la tarea' });
+        }
+    };
+
+    static async deleteTask(req: Request, res: Response): Promise<void> {
+        try {
+            const id = req.params.id;
+            await taskService.delete(id);
+            res.status(204).send();
+        } catch (error) {
+            res.status(500).json({ error: 'Error al eliminar la tarea' });
+        }
+    };
 }

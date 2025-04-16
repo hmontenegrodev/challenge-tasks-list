@@ -1,9 +1,8 @@
 import { Task } from "../entities/Task";
 
 export interface TaskRepository {
-    createTask(task: Task): Promise<Task>;
-    updateTask(id: string, task: Task): Promise<Task>;
-    deleteTask(id: string): Promise<void>;
-    markAsFavorite(id: string, mark:boolean): Promise<Task>;
+    create(task: Task): Promise<Task>;
+    update(id: string, task: Partial<Task>): Promise<Task>;
+    delete(id: string): Promise<void>;
     getTasksByUserId(userId: string): Promise<Task[]>;
 }
