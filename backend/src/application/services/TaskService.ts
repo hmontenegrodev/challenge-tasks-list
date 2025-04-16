@@ -28,7 +28,7 @@ export class TaskService {
         return this.getTasks.execute(userId);
     }
 
-    async update(id: string, task: Partial<Task>): Promise<void> {
+    async update(id: string, task: Partial<Task>): Promise<Task> {
         return this.updateTask.execute(id, task);
     }
 

@@ -13,7 +13,7 @@ export class TaskController {
         try {
             const { title, description, userId } = req.body;
             if (!userId) {
-                res.status(401).json({ message: "Unauthorized" });
+                res.status(401).json({ message: "No autorizado" });
                 return
             }
 
@@ -37,7 +37,7 @@ export class TaskController {
         try {
             const userId = req.params?.userId;
             if (!userId) {
-                res.status(401).json({ message: "Unauthorized" });
+                res.status(401).json({ message: "No autorizado" });
                 return;
             }
             const result = await taskService.getByUserId(userId);
@@ -52,10 +52,10 @@ export class TaskController {
         try {
             const id = req.params.id;
             const task = req.body;
-            await taskService.update(id, task);
-            res.status(204).send();
-        } catch (error) {
-            res.status(500).json({ error: 'Error al actualizar la tarea' });
+            const result = await taskService.update(id, task);
+            res.status(200).send(result);
+        } catch (err) {
+            res.status(500).json({ message: (err as Error).message });
         }
     };
 
@@ -64,8 +64,8 @@ export class TaskController {
             const id = req.params.id;
             await taskService.delete(id);
             res.status(204).send();
-        } catch (error) {
-            res.status(500).json({ error: 'Error al eliminar la tarea' });
+        } catch (err) {
+            res.status(500).json({ message: (err as Error).message });
         }
     };
 }
