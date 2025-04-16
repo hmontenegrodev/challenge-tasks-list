@@ -25,7 +25,7 @@ export class FirebaseAuthRepository implements AuthRepository {
         };
     }
 
-    async login(email: string): Promise<{ token: string; email: string; }> {
+    async login(email: string): Promise<{ token: string; email: string; userId: string }> {
         const snapshot = await this.userRef.where("email", "==", email).get();
         if (snapshot.empty) {
             throw new Error("Usuario no encontrado");
@@ -40,7 +40,8 @@ export class FirebaseAuthRepository implements AuthRepository {
 
         return {
             token,
-            email: userData.email
+            email: userData.email,
+            userId: snapshot.docs[0].id,
         };
     }
 

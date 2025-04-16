@@ -3,17 +3,19 @@ import { Task } from "../../domain/entities/Task";
 import { FirebaseTaskRepository } from "../../infractruture/persistence/FirebaseTaskRepository";
 import { CreateTask } from "../../application/use-cases/task/CreateTask";
 import { GetTasks } from "../../application/use-cases/task/GetTasks";
+import { TaskService } from "../../application/services/TaskService";
 
 
 const taskRepository = new FirebaseTaskRepository();
+const taskService = new TaskService(taskRepository);
 
 export class TaskController {
-    static async createTask(req: Request, res: Response) {
+    static async createTask(req: Request, res: Response): Promise<void> {
         try {
-            const { title, description } = req.body;
-            const userId = req.body?.uid;
+            const { title, description, userId } = req.body;
             if (!userId) {
-                return res.status(401).json({ message: "Unauthorized" });
+                 res.status(401).json({ message: "Unauthorized" });
+                 return
             }
 
             const newTask = {
@@ -24,8 +26,7 @@ export class TaskController {
                 favorite: false,
             } as Task;
 
-            const useCase = new CreateTask(taskRepository);
-            const task = await useCase.execute(newTask);
+            const task = await taskService.create(newTask);
             res.status(201).json(task);
 
         } catch (err) {
@@ -33,14 +34,14 @@ export class TaskController {
         }
     }
 
-    static async getByUser(req: Request, res: Response) {
+    static async getByUser(req: Request, res: Response): Promise<void> {
         try {
-            const userId = req.body?.uid;
+            const userId = req.params?.userId;
             if (!userId) {
-                return res.status(401).json({ message: "Unauthorized" });
+                res.status(401).json({ message: "Unauthorized" });
+                return;
             }
-            const useCase = new GetTasks(taskRepository);
-            const result = await useCase.execute(userId);
+            const result = await taskService.getByUserId(userId);
             res.status(200).json(result);
 
         } catch (err) {

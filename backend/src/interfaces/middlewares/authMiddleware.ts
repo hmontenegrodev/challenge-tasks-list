@@ -6,11 +6,12 @@ export interface AuthenticatedRequest extends Request {
     user?: User;
 }
 
-export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction):void => {
     const token = req.headers['authorization'];
 
     if (!token || !token.startsWith('Bearer ')) {
-        return res.status(401).json({ message: 'No se recibio token' });
+        res.status(401).json({ message: 'No se recibio token' });
+        return;
     }
 
     const tokenValue = token.split(' ')[1];
@@ -20,7 +21,7 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
         req.user = decoded;
         next();
     } catch (error) {
-        return res.status(403).json({ message: 'Token no valido' });
+        res.status(403).json({ message: 'Token no valido o expirado' });
     }
 
 }

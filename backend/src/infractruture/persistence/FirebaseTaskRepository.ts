@@ -1,4 +1,3 @@
-import { create } from "domain";
 import { Task } from "../../domain/entities/Task";
 import { TaskRepository } from "../../domain/repositories/TaskRepository";
 import { db } from "../firebase/firebase";
@@ -14,12 +13,16 @@ export class FirebaseTaskRepository implements TaskRepository {
         return newTask;
     }
     
-    async updateTask(id: string, task: Task): Promise<Task> {
-        throw new Error("Method not implemented.");
+    async updateTask(id: string, task: Partial<Task>): Promise<Task> {
+        const doc = await this.collection.doc(id).get();
+        if (!doc.exists) {
+            throw new Error(`Tarea con ${id} no existe.`);
+        }
+        return { ...doc.data(), id } as Task;
     }
     
-    async deleteTask(id: string): Promise<Task> {
-        throw new Error("Method not implemented.");
+    async deleteTask(id: string): Promise<void> {
+        await this.collection.doc(id).delete();
     }
 
     async markAsFavorite(id: string, mark: boolean): Promise<Task> {

@@ -4,7 +4,9 @@ import { TaskController } from "../controllers/TaskControllers";
 
 const router = Router();
 
-router.post("/tasks", authMiddleware, TaskController.createTask);
-router.get("/tasks", authMiddleware, TaskController.getByUser);
+router.use(authMiddleware); 
+
+router.post("/", TaskController.createTask);
+router.get("/:userId", TaskController.getByUser);
 
 export default router;

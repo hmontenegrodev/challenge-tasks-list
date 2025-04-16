@@ -7,7 +7,7 @@ const authService = new AuthService(authRepository);
 
 export class AuthController {
 
-    static async register(req: Request, res: Response) {
+    static async register(req: Request, res: Response): Promise<void> {
         try {
             const user = await authService.register(req.body);
             res.status(201).json(user);
@@ -16,7 +16,7 @@ export class AuthController {
         }
     }
 
-    static async login(req: Request, res: Response) {
+    static async login(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.body;
             const token = await authService.login(email);
