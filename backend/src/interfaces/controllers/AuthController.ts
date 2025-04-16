@@ -11,8 +11,8 @@ export class AuthController {
         try {
             const user = await authService.register(req.body);
             res.status(201).json(user);
-        } catch (error: any) {
-            res.status(400).json({ message: error.message });
+        } catch (err) {
+            res.status(400).json({ message: (err as Error).message });
         }
     }
 
@@ -21,8 +21,8 @@ export class AuthController {
             const { email } = req.body;
             const token = await authService.login(email);
             res.status(200).json(token);
-        } catch (error: any) {
-            res.status(401).json({ message: error.message });
+        } catch (err) {
+            res.status(401).json({ message: (err as Error).message });
         }
     }
 }

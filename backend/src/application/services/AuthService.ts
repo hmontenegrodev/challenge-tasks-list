@@ -1,12 +1,15 @@
 import { User } from "../../domain/entities/User";
 import { AuthRepository } from "../../domain/repositories/AuthRepository";
-import { RegisterUser } from "../../domain/use-cases/RegisterUser";
+import { LoginUser } from "../use-cases/auth/LoginUser";
+import { RegisterUser } from "../use-cases/auth/RegisterUser";
 
 export class AuthService {
     private registerUser: RegisterUser;
+    private loginUser: LoginUser;
 
-    constructor(private authRepository: AuthRepository) {
+    constructor(authRepository: AuthRepository) {
         this.registerUser = new RegisterUser(authRepository);
+        this.loginUser = new LoginUser(authRepository);
     }
 
     async register(user: User): Promise<User> {
@@ -14,6 +17,6 @@ export class AuthService {
     }
 
     async login(email: string): Promise<{ token: string; email: string; }> {
-        return this.authRepository.login(email);
+        return this.loginUser.execute(email);
     }
 }
