@@ -1,0 +1,5 @@
+<ul *ngIf="tasks$ | async as tasks">
+    <li *ngFor="let task of tasks; trackBy: trackById">
+        {{ task.title }} - {{ task.description }}
+    </li>
+</ul>

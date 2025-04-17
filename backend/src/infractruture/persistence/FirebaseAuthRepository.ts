@@ -4,9 +4,10 @@ import { db } from "../firebase/firebase";
 import jwt from 'jsonwebtoken';
 
 export class FirebaseAuthRepository implements AuthRepository {
-    private userRef = db.collection("users");
-    async register(user: User): Promise<User> {
-        const snapshot = await this.userRef.where("email", "==", user.email).get();
+    private docRef = db.collection("users");
+    
+    async register(user: User): Promise<{ token: string; user: User }> {
+        const snapshot = await this.docRef.where("email", "==", user.email).get();
         if (!snapshot.empty) {
             throw new Error("Usuario existente");
         }
@@ -14,17 +15,27 @@ export class FirebaseAuthRepository implements AuthRepository {
             email: user.email,
             createdAt: new Date(),
         }
-        const docRef = await this.userRef.add(newUser);
+        const newDocRef = await this.docRef.add(newUser);
+
+        const token = jwt.sign(
+            { email: newUser.email, uid: newDocRef.id },
+            process.env.JWT_SECRET as string,
+            { expiresIn: '1h' }
+        );
+
+        const result = {
+            id: newDocRef.id,
+            email: newUser.email,
+        }
 
         return {
-            id: docRef.id,
-            email: newUser.email,
-            createdAt: newUser.createdAt,
+            token,
+            user: result
         };
     }
 
     async login(email: string): Promise<{ token: string; user: User }> {
-        const snapshot = await this.userRef.where("email", "==", email).get();
+        const snapshot = await this.docRef.where("email", "==", email).get();
         if (snapshot.empty) {
             throw new Error("Usuario no encontrado");
         }
