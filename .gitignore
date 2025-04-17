@@ -3,3 +3,10 @@ backend/.env
 backend/firebase-config.json
 backend/dist/
 backend/node_modules/
+
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/cache/
+frontend/.vscode/
+frontend/.editorconfig
+frontend/package-lock.json

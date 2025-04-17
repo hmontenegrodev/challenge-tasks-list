@@ -1,0 +1,16 @@
+<div class="login-container">
+    <h2>{{ showRegister ? 'Registrarse' : 'Iniciar sesión' }}</h2>
+  
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <input type="email" placeholder="Email" formControlName="email" />
+  
+      <button type="submit">{{ showRegister ? 'Registrarse' : 'Entrar' }}</button>
+    </form>
+  
+    <p>
+      <a href="#" (click)="toggleRegister(); $event.preventDefault()">
+        {{ showRegister ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate' }}
+      </a>
+    </p>
+  </div>
+  

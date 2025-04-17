@@ -6,12 +6,10 @@ import jwt from 'jsonwebtoken';
 export class FirebaseAuthRepository implements AuthRepository {
     private userRef = db.collection("users");
     async register(user: User): Promise<User> {
-        // Buscar si el usuario ya existe
         const snapshot = await this.userRef.where("email", "==", user.email).get();
         if (!snapshot.empty) {
             throw new Error("Usuario existente");
         }
-        // Crear el usuario en Firestore
         const newUser = {
             email: user.email,
             createdAt: new Date(),
@@ -25,7 +23,7 @@ export class FirebaseAuthRepository implements AuthRepository {
         };
     }
 
-    async login(email: string): Promise<{ token: string; email: string; userId: string }> {
+    async login(email: string): Promise<{ token: string; user: User }> {
         const snapshot = await this.userRef.where("email", "==", email).get();
         if (snapshot.empty) {
             throw new Error("Usuario no encontrado");
@@ -38,10 +36,14 @@ export class FirebaseAuthRepository implements AuthRepository {
             { expiresIn: '1h' }
         );
 
+        const user = {
+            email: userData.email,
+            id: snapshot.docs[0].id,
+        }
+
         return {
             token,
-            email: userData.email,
-            userId: snapshot.docs[0].id,
+            user
         };
     }
 
