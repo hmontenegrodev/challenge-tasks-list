@@ -14,15 +14,17 @@ export class FirebaseTaskRepository implements TaskRepository {
     }
 
     async update(id: string, task: Partial<Task>): Promise<Task> {
-        const doc = await this.collection.doc(id).get();
+        const taskRef = db.collection('tasks').doc(id);
+        const doc = await taskRef.get();
         if (!doc.exists) {
             throw new Error(`Tarea con id ${id} no encontrada`);
         }
         const updateTask = { ...task, updatedAt: new Date().toISOString() };
         await doc.ref.update(updateTask);
 
-
-        return doc.data() as Task;
+        const updatedTaskDoc = await taskRef.get();
+        const updatedTask = { id: updatedTaskDoc.id, ...updatedTaskDoc.data() };
+        return updatedTask as Task;
     }
 
     async delete(id: string): Promise<void> {

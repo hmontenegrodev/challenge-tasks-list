@@ -8,6 +8,6 @@
     </mat-dialog-content>
     <mat-dialog-actions>
         <button mat-flat-button (click)="onCancel()">Volver</button>
-        <button mat-flat-button color="primary" (click)="onRegister()">Registrar</button>
+        <button mat-flat-button color="primary" (click)="onRegister()" [disabled]="!form.valid">Registrar</button>
     </mat-dialog-actions>
 </form>

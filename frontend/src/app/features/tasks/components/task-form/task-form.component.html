@@ -7,5 +7,8 @@
         <mat-label>Descripción</mat-label>
         <input matInput placeholder="Placeholder" type="text" formControlName="description" placeholder="Descripción">
     </mat-form-field>
-    <button mat-button color="primary" type="submit" [disabled]="form.invalid">Agregar</button>
+    <button mat-button color="primary" type="submit" [disabled]="form.invalid">
+        <mat-icon>add</mat-icon>
+        Agregar
+    </button>
 </form>

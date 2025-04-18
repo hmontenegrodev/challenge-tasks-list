@@ -74,6 +74,7 @@ export class LoginComponent {
             this.router.navigate(['/tasks']);
           },
           error: (error) => {
+            this.loadingService.hide();
             if (error.status === 401) {
               this.openRegisterDialog();
             } else if (error.status === 400) {

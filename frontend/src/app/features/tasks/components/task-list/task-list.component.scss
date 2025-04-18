@@ -1,0 +1,37 @@
+.item-card {
+    margin-bottom: 2rem;
+
+    mat-card-header {
+        align-items: center;
+
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+    }
+
+    mat-card-content {
+        padding-left: 55px;
+    }
+
+    mat-card-actions {
+        justify-content: space-between;
+        padding-left: 25px;
+        padding-top: 20px;
+        .created-at {
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            display: flex;
+            align-items: center;
+
+            mat-icon {
+                margin-right: 6px;
+            }
+        }
+    }
+}
+
+.pending-task-text {
+    font-weight: bold;
+}

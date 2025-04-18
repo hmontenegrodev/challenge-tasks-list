@@ -1,11 +1,39 @@
-
-
 <p>
-    Te quedan {{pendingTasksCount$ | async}} tareas pendientes
+    Te quedan <span class="pending-task-text">{{pendingTasksCount$ | async}}</span> tareas pendientes
 </p>
 
-<mat-selection-list #tasks>
-    <mat-list-option *ngFor="let task of tasks$ | async; trackBy: trackById" [value]="task" [selected]="task.completed">
-        {{ task.title }} - {{ task.description }}
-    </mat-list-option>
-</mat-selection-list>
+<mat-list>
+    <div *ngFor="let task of tasks$ | async; trackBy: trackById" class="">
+        <mat-card class="item-card" appearance="outlined">
+            <mat-card-header>
+                <!-- Checkbox a la izquierda -->
+                <mat-checkbox [checked]="task.completed" (change)="markCompleted(task)"></mat-checkbox>
+                <div class="title">{{ task.title }}</div>
+            </mat-card-header>
+            <mat-card-content>
+                <p>
+                    {{ task.description }}
+                </p>
+            </mat-card-content>
+            <mat-card-actions>
+                <div class="created-at">
+                    <mat-icon>calendar_today</mat-icon>
+                    {{ task.createdAt| date: 'dd/MM/yyyy HH:mm' }}hrs
+                </div>
+
+                <div class="actions">
+                    <!-- Editar -->
+                    <button mat-button color="primary" (click)="onEdit(task)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+
+                    <!-- Eliminar -->
+                    <button mat-button color="warn" (click)="onDelete(task)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</mat-list>

@@ -1,27 +1,134 @@
-# ChallengeTasksList
+# Challenge Tasks List
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.16.
+Este repositorio contiene una aplicación fullstack para crear una lista de tareas, compuesta por un frontend en Angular 17 y un backend en Node.js.
 
-## Development server
+---
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## 🚀 Tecnologías utilizadas
 
-## Code scaffolding
+### Frontend
+- Angular 17 (Standalone Components)
+- TypeScript
+- Angular Material
+- RxJS
+- Angular Animations
+- SCSS con CSS Grid/Flexbox
+- Firebase Hosting
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Backend
+- Node.js
+- Express.js
+- Firebase Admin SDK
+- Firestore
+- dotenv
+- CORS
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 📂 Estructura del proyecto
 
-## Running unit tests
+### Frontend
+```
+src/
+├── app/
+│   ├── core/              # Servicios globales, guards, interceptores
+│   ├── shared/            # Interfaces, utilidades y componentes compartidos
+│   ├── features/
+│   │   ├── auth/          # Login y registro de usuario
+│   │   └── tasks/         # Página de tareas (listar, crear, editar, completar)
+│   └── app.routes.ts      # Rutas standalone (Lazy Loading)
+├── environments/          # Archivos .env.ts para distintas configuraciones
+└── styles.scss            # Variables SCSS y estilos globales
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Backend
+```
+src/
+├── controllers/      # Lógica de negocio
+├── routes/           # Definición de endpoints
+├── middlewares/      # Verificación de JWT
+├── services/         # Servicios de Firestore
+└── index.ts          # Entrada principal
+```
 
-## Running end-to-end tests
+---
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 🎓 Funcionalidades principales
 
-## Further help
+### 🚑 Autenticación
+- Login y registro con Firebase Auth
+- Interceptor HTTP para envío de token JWT
+- Guard para proteger rutas
+- Logout manual y automático cuando el token expira
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### 📝 Gestión de tareas
+- Crear, listar, editar y eliminar tareas
+- Marcar tareas como completadas
+- Checkbox visual
+- Contador de tareas pendientes
+
+### 📅 Experiencia de usuario
+- Interfaz responsiva
+- Carga centralizada con spinner fullscreen
+- Diálogos para edición y registro
+- Animaciones suaves
+
+---
+
+## 💡 Consideraciones de diseño
+- **Arquitectura limpia**: separación por dominios y responsabilidades
+- **Standalone components**: modularización moderna y mejor rendimiento
+- **Lazy loading y OnPush**: optimización del renderizado
+
+---
+
+## 📅 Scripts útiles
+
+### Frontend
+```bash
+npm install          # Instalar dependencias
+ng serve             # Correr localmente
+ng build --configuration=production   # Build para producción
+```
+
+### Backend
+```bash
+npm install          # Instalar dependencias
+npm run dev          # Correr en desarrollo
+npm run build        # Build para producción (opcional)
+```
+
+---
+
+## 🔐 Seguridad
+- Middleware que verifica tokens JWT en cada petición
+- Redirección automática al login si el token expira
+- Backend como capa de seguridad entre frontend y Firebase
+
+---
+
+## 🚀 Despliegue
+
+### Firebase Hosting (Frontend)
+1. Ejecutar `ng build --configuration=production`
+2. Instalar Firebase CLI y ejecutar:
+   ```bash
+   firebase login
+   firebase init hosting
+   firebase deploy
+   ```
+
+### Opciones para el Backend
+- Firebase Functions
+- Vercel (carpeta `api/`)
+- Render / Railway
+
+---
+
+## 👋 Autor
+Proyecto desarrollado como challenge de práctica fullstack.
+
+---
+
+¡Gracias por revisar este proyecto! ✨
+

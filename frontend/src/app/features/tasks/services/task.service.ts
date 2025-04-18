@@ -40,17 +40,38 @@ export class TaskService {
                         const currentTasks = this.taskSubject.getValue();
                         this.taskSubject.next([newTask, ...currentTasks]);
                     }));
-            }))
+            }));
     }
-    /* 
-    
-    updateTask(taskId: string, updatedTask: Partial<Task>): Observable<void>  {
-            const index = this.tasks$.findIndex(task => task.id === updatedTask.id);
-            if (index !== -1) {
-                this.tasks[index] = updatedTask;
-            }
-        }
-        deleteTask(taskId: string): void {
-            this.tasks = this.tasks.filter(task => task.id !== taskId);
-        } */
+
+    updateTask(taskId: string, task: Partial<Task>): Observable<Task | null> {
+        return this.authService.currentUser$.pipe(
+            switchMap(user => {
+                if (!user?.id) return of(null);
+
+                const url = `${this.baseUrl}/${taskId}`;
+                return this.http.put<Task>(url, task).pipe(
+                    tap((updatedTask: Task) => {
+                        const currentTasks = this.taskSubject.getValue();
+                        const updatedTasks = currentTasks.map(t => t.id === updatedTask.id ? updatedTask : t);
+                        this.taskSubject.next(updatedTasks);
+                    }));
+            })
+        );
+    }
+
+    deleteTask(taskId: string): Observable<Task | null> {
+        return this.authService.currentUser$.pipe(
+            switchMap(user => {
+                if (!user?.id) return of(null);
+
+                return this.http.delete<Task>(`${this.baseUrl}/${taskId}`);
+            }),
+            tap(() => {
+                const currentTasks = this.taskSubject.getValue();
+                const updatedTasks = currentTasks.filter(task => task.id !== taskId);
+                this.taskSubject.next(updatedTasks);
+            }),
+        );
+    }
+
 }
