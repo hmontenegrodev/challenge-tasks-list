@@ -1,6 +1,6 @@
 # Challenge Tasks List
 
-Este repositorio contiene una aplicación fullstack para la gestión de tareas, compuesta por un frontend en Angular 17 y un backend en Node.js que se conecta con Firebase Authentication y Firestore.
+Este repositorio contiene una aplicación fullstack para crear una lista de tareas, compuesta por un frontend en Angular 17 y un backend en Node.js.
 
 ---
 
@@ -64,7 +64,7 @@ src/
 ### 📝 Gestión de tareas
 - Crear, listar, editar y eliminar tareas
 - Marcar tareas como completadas
-- Checkbox visual + tachado de texto en tiempo real
+- Checkbox visual
 - Contador de tareas pendientes
 
 ### 📅 Experiencia de usuario
@@ -79,7 +79,6 @@ src/
 - **Arquitectura limpia**: separación por dominios y responsabilidades
 - **Standalone components**: modularización moderna y mejor rendimiento
 - **Lazy loading y OnPush**: optimización del renderizado
-- **Uso de SCSS global**: variables compartidas desde `styles.scss`
 
 ---
 
