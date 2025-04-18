@@ -7,6 +7,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RegisterDialogComponent } from '../components/register-dialog.component';
+import { FullscreenLoaderComponent } from "../../../shared/components/fullscreen-loader.component";
 
 @Component({
   selector: 'app-login',
@@ -17,7 +22,9 @@ import { MatInputModule } from '@angular/material/input';
     MatGridListModule,
     MatCardModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    FullscreenLoaderComponent
   ],
 
   templateUrl: './login.component.html',
@@ -28,38 +35,64 @@ export class LoginComponent {
   private formBuilder: FormBuilder = inject(FormBuilder);
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
+  private dialog: MatDialog = inject(MatDialog);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
+  isLoading: boolean = false;
+  showRegister: boolean = false;
 
   form = this.formBuilder.group({
     email: ['', { validators: [Validators.required, Validators.email] }],
   });
 
-  showRegister = false;
 
   toggleRegister() {
     this.showRegister = !this.showRegister;
   }
 
-  onSubmit() {
+  onSubmit(isDialogOpen: boolean = false) {
     if (this.form.valid) {
       const email = this.form.get('email')?.value;
 
       if (email) {
-        const action = this.showRegister
+        let action = this.showRegister
           ? this.authService.register(email) :
           this.authService.login(email);
+        if (isDialogOpen) {
+          action = this.authService.register(email);
+        }
+        this.isLoading = true;
         action.subscribe({
-          next: () => this.router.navigate(['/tasks']),
+          next: () => {
+            this.isLoading = false;
+            this.router.navigate(['/tasks'])
+          },
           error: (error) => {
-            alert('Usuario no existe.');
+            this.isLoading = false;
+            if (error.status === 401) {
+              this.openRegisterDialog();
+            } else if (error.status === 400) {
+              this.openSnackBar('Usuario ya existe. Por favor inicie sesión.');
+            }
           }
         })
-      } else {
-        console.error('Email is required');
       }
-      console.log('Form submitted:', email);
-    } else {
-      console.log('Form is invalid');
     }
+  }
+
+  openRegisterDialog() {
+    const dialogRef = this.dialog.open(RegisterDialogComponent);
+    dialogRef.afterClosed().subscribe((email: string) => {
+      if (email) {
+        this.form.get('email')?.setValue(email);
+        this.onSubmit(true);
+      }
+    });
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 10000
+    });
   }
 
 

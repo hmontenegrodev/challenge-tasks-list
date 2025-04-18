@@ -5,31 +5,30 @@
     <img src="assets/login-background.svg" alt="Ilustración login" />
   </div>
 
-
+  <!-- Formulario de inicio de sesión o registro -->
   <div class="login-form">
-
-
-
     <mat-card  appearance="outlined">
       <div>
-        <h2>{{ showRegister ? 'Registrarse' : 'Iniciar sesión' }}</h2>
+        <h2>{{ showRegister ? 'Registrate' : 'Inicia sesión' }}</h2>
       </div>
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="fill" class="full-width">
+        <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
           <input matInput type="email" placeholder="Email" formControlName="email" />
         </mat-form-field>
 
-        <button type="submit">{{ showRegister ? 'Registrarse' : 'Entrar' }}</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="!form.valid">{{ showRegister ? 'Registrarse' : 'Entrar' }}</button>
+      
+        <p>
+          <a mat-button href="#" (click)="toggleRegister(); $event.preventDefault()">
+            {{ showRegister ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate' }}
+          </a>
+        </p>
       </form>
-
-      <p>
-        <a href="#" (click)="toggleRegister(); $event.preventDefault()">
-          {{ showRegister ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate' }}
-        </a>
-      </p>
     </mat-card>
   </div>
+
+  <app-fullscreen-loader [loading]="isLoading" />
 
 </div>
