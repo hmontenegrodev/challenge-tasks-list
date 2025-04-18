@@ -3,11 +3,23 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatGridListModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule
+  ],
+
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

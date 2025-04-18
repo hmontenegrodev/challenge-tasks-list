@@ -30,7 +30,7 @@ export class FirebaseTaskRepository implements TaskRepository {
     }
 
     async getTasksByUserId(userId: string): Promise<Task[]> {
-        const snapshot = await this.collection.where("userId", "==", userId).get();
+        const snapshot = await this.collection.where("userId", "==", userId).orderBy('createdAt', 'desc').get();
         const tasks: Task[] = [];
 
         snapshot.forEach((doc) => {

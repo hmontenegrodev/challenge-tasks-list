@@ -14,8 +14,8 @@ import { Task } from '../models/task.model';
 export class TaskListComponent { 
   private taskService = inject(TaskService);
 
-  tasks$ = this.taskService.getTasks();
+  tasks$ = this.taskService.tasks$;
 
-  trackById = (index: number, task: Task) => task.id;
+  trackById = (index: number, task: Task) => task.id!;
 
 }

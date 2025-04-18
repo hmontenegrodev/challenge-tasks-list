@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResponse } from '../models/auth-response';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
-import { User } from '../../core/models/user';
+import { environment } from '../../../../environments/environment';
+import { User } from '../../../core/models/user';
 
 @Injectable({
   providedIn: 'root'
