@@ -11,7 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RegisterDialogComponent } from '../components/register-dialog.component';
-import { FullscreenLoaderComponent } from "../../../shared/components/fullscreen-loader.component";
+import { FullscreenLoaderComponent } from "../../../shared/components/fullscreen-loader/fullscreen-loader.component";
+import { LoadingService } from '../../../shared/components/services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -33,12 +34,18 @@ import { FullscreenLoaderComponent } from "../../../shared/components/fullscreen
 })
 export class LoginComponent {
   private formBuilder: FormBuilder = inject(FormBuilder);
-  private authService: AuthService = inject(AuthService);
+
   private router: Router = inject(Router);
+
   private dialog: MatDialog = inject(MatDialog);
   private snackBar: MatSnackBar = inject(MatSnackBar);
-  isLoading: boolean = false;
+
+  private authService: AuthService = inject(AuthService);
+  public loadingService: LoadingService = inject(LoadingService);
+
   showRegister: boolean = false;
+
+  loading$ = this.loadingService.loading$;
 
   form = this.formBuilder.group({
     email: ['', { validators: [Validators.required, Validators.email] }],
@@ -60,21 +67,26 @@ export class LoginComponent {
         if (isDialogOpen) {
           action = this.authService.register(email);
         }
-        this.isLoading = true;
+
+        this.loadingService.show();
         action.subscribe({
           next: () => {
-            this.isLoading = false;
-            this.router.navigate(['/tasks'])
+            this.router.navigate(['/tasks']);
           },
           error: (error) => {
-            this.isLoading = false;
             if (error.status === 401) {
               this.openRegisterDialog();
             } else if (error.status === 400) {
               this.openSnackBar('Usuario ya existe. Por favor inicie sesión.');
+            }else {
+              this.openSnackBar('Error al iniciar sesión. Por favor intente de nuevo.');
             }
+            this.form.reset();
+          },
+          complete: () => {
+            this.loadingService.hide();
           }
-        })
+        });
       }
     }
   }

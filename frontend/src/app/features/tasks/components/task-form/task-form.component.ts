@@ -1,12 +1,21 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { TaskService } from '../services/task.service';
+import { TaskService } from '../../services/task.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-task-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
+  ],
   templateUrl: './task-form.component.html',
   styleUrl: './task-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush

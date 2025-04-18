@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { TaskFormComponent } from "../components/task-form.component";
-import { TaskListComponent } from "../components/task-list.component";
-import { AuthService } from '../../auth/services/auth.service';
-import { Router } from '@angular/router';
+import { TaskFormComponent } from "../components/task-form/task-form.component";
+import { TaskListComponent } from "../components/task-list/task-list.component";
 import { MatButtonModule } from '@angular/material/button';
+import { NavbarComponent } from "../../../shared/components/navbar/navbar.component";
 
 @Component({
   selector: 'app-tasks',
@@ -11,17 +10,13 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     TaskFormComponent,
     TaskListComponent,
-    MatButtonModule],
+    MatButtonModule,
+    NavbarComponent
+],
   templateUrl: './tasks.page.html',
   styleUrl: './tasks.page.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TasksPage {
-  private authService = inject(AuthService);
-  private router = inject(Router);
 
-  onLogout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
 }

@@ -29,6 +29,6 @@
     </mat-card>
   </div>
 
-  <app-fullscreen-loader [loading]="isLoading" />
+  <app-fullscreen-loader *ngIf="loadingService.loading$ | async" />
 
 </div>

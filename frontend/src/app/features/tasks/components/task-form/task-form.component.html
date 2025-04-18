@@ -1,0 +1,11 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="task-form">
+    <mat-form-field appearance="outline">
+        <mat-label>Titulo</mat-label>
+        <input matInput placeholder="Placeholder" type="text" formControlName="title" placeholder="Titulo" required>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <input matInput placeholder="Placeholder" type="text" formControlName="description" placeholder="Descripción">
+    </mat-form-field>
+    <button mat-button color="primary" type="submit" [disabled]="form.invalid">Agregar</button>
+</form>

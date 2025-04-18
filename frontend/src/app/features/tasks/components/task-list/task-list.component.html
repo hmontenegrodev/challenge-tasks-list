@@ -1,0 +1,11 @@
+
+
+<p>
+    Te quedan {{pendingTasksCount$ | async}} tareas pendientes
+</p>
+
+<mat-selection-list #tasks>
+    <mat-list-option *ngFor="let task of tasks$ | async; trackBy: trackById" [value]="task" [selected]="task.completed">
+        {{ task.title }} - {{ task.description }}
+    </mat-list-option>
+</mat-selection-list>

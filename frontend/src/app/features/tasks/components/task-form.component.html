@@ -1,5 +1,0 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="task-form">
-    <input type="text" formControlName="title" placeholder="Nombre de tu tarea" />
-    <input type="text" formControlName="description" placeholder="Describe tu tarea" />
-    <button type="submit" [disabled]="form.invalid">Agregar</button>
-</form>
