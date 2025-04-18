@@ -10,6 +10,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.component';
+import { LoadingService } from '../../../../shared/components/services/loading.service';
+import { FullscreenLoaderComponent } from '../../../../shared/components/fullscreen-loader/fullscreen-loader.component';
 
 @Component({
   selector: 'app-task-list',
@@ -20,7 +22,8 @@ import { EditTaskDialogComponent } from '../edit-task-dialog/edit-task-dialog.co
     MatCheckboxModule,
     MatIconModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    FullscreenLoaderComponent
   ],
   templateUrl: './task-list.component.html',
   styleUrl: './task-list.component.scss',
@@ -32,7 +35,10 @@ export class TaskListComponent {
 
   tasks$ = this.taskService.tasks$;
 
-  trackById = (index: number, task: Task) => task.id!;
+  public loadingService: LoadingService = inject(LoadingService);
+  loading$ = this.loadingService.loading$;
+
+  trackById = (_index: number, task: Task) => task.id!;
 
   pendingTasksCount$ = this.tasks$.pipe(
     map(tasks => tasks.filter(task => !task.completed).length)
@@ -50,9 +56,13 @@ export class TaskListComponent {
     });
 
     dialogRef.afterClosed().subscribe((updatedTask: Task | undefined) => {
+      this.loadingService.show();
+
       if (updatedTask) {
         if (updatedTask.id) {
-          this.taskService.updateTask(updatedTask.id, updatedTask).subscribe();
+          this.taskService.updateTask(updatedTask.id, updatedTask).subscribe(() => {
+            this.loadingService.hide();
+          });
         }
       }
     });
@@ -60,7 +70,11 @@ export class TaskListComponent {
   }
 
   onDelete(task: Task) {
-    this.taskService.deleteTask(task.id!).subscribe();
+    this.loadingService.show();
+
+    this.taskService.deleteTask(task.id!).subscribe(() => {
+      this.loadingService.hide();
+    });
   }
 
 }
