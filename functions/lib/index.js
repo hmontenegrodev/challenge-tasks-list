@@ -32,8 +32,43 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.api = void 0;
+exports.api = exports.app = void 0;
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+const body_parser_1 = __importDefault(require("body-parser"));
+const auth_routes_1 = __importDefault(require("./interfaces/routes/auth.routes"));
+const task_routes_1 = __importDefault(require("./interfaces/routes/task.routes"));
 const functions = __importStar(require("firebase-functions"));
-const app_1 = require("./app");
-exports.api = functions.https.onRequest(app_1.app);
+// Inicializar Express
+exports.app = (0, express_1.default)();
+// Define la URL de tu frontend
+const allowedOrigin = 'https://challenge-tasks-list.web.app';
+// Configurar CORS
+exports.app.use((0, cors_1.default)({
+    origin: allowedOrigin,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}));
+// Manejar OPTIONS manualmente si es necesario
+exports.app.options('*', (0, cors_1.default)({
+    origin: allowedOrigin,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}));
+// Body parser
+exports.app.use(body_parser_1.default.json());
+// Rutas
+exports.app.use('/api/auth', auth_routes_1.default);
+exports.app.use('/api/tasks', task_routes_1.default);
+// Ruta de prueba
+exports.app.get('/', (_req, res) => {
+    res.send('API lista para usar!!!');
+});
+// Exportar como función de Firebase
+exports.api = functions.https.onRequest(exports.app);

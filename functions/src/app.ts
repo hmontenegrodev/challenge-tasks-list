@@ -1,27 +1,43 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import dotenv from 'dotenv';
 import authRoutes from './interfaces/routes/auth.routes';
 import taskRoutes from './interfaces/routes/task.routes';
+import * as functions from 'firebase-functions';
 
-// Importar el archivo de configuración de Firebase
-dotenv.config();
-
-// Inicializar la aplicación Express
+// Inicializar Express
 export const app = express();
 
-// Configurar Cors y body-parser
-// Permitir solicitudes desde el frontend
-app.use(cors());
+// Define la URL de tu frontend
+const allowedOrigin = 'https://challenge-tasks-list.web.app';
+
+// Configurar CORS
+app.use(cors({
+  origin: allowedOrigin,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+
+// Manejar OPTIONS manualmente si es necesario
+app.options('*', cors({
+  origin: allowedOrigin,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+
+// Body parser
 app.use(bodyParser.json());
 
-// Configurar las rutas
+// Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/tasks', taskRoutes);
 
-
-// Ruta de prueba para verificar que la API está funcionando
+// Ruta de prueba
 app.get('/', (_req, res) => {
   res.send('API lista para usar!!!');
 });
+
+// Exportar como función de Firebase
+export const api = functions.https.onRequest(app);
