@@ -10,3 +10,7 @@ frontend/.angular/cache/
 frontend/.vscode/
 frontend/.editorconfig
 frontend/package-lock.json
+
+functions/dist
+functions/node_modules
+functions/package-lock.json
