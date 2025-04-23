@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://challenge-tasks-list.cloudfunctions.net/api'
+  apiBaseUrl: 'https://us-central1-challenge-tasks-list.cloudfunctions.net/api'
 };

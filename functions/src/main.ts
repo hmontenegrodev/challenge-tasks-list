@@ -31,8 +31,8 @@ app.options('*', cors({
 app.use(bodyParser.json());
 
 // Rutas
-app.use('/api/auth', authRoutes);
-app.use('/api/tasks', taskRoutes);
+app.use('/auth', authRoutes);
+app.use('/tasks', taskRoutes);
 
 // Ruta de prueba
 app.get('/', (_req, res) => {
