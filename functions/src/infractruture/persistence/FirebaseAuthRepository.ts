@@ -7,16 +7,18 @@ import * as functions from 'firebase-functions';
 export class FirebaseAuthRepository implements AuthRepository {
     private docRef = db.collection("users");
     
-    async register(user: User): Promise<{ token: string; user: User }> {
-        const snapshot = await this.docRef.where("email", "==", user.email).get();
+    async register(userData: User): Promise<{ token: string; user: User }> {
+        const snapshot = await this.docRef.where("email", "==", userData.email).get();
         if (!snapshot.empty) {
             throw new Error("Usuario existente");
         }
         const newUser = {
-            email: user.email,
+            email: userData.email,
             createdAt: new Date(),
         }
         const newDocRef = await this.docRef.add(newUser);
+
+        console.log("newDocRef", newDocRef.id);
 
         const token = jwt.sign(
             { email: newUser.email, uid: newDocRef.id },
@@ -24,14 +26,14 @@ export class FirebaseAuthRepository implements AuthRepository {
             { expiresIn: '1h' }
         );
 
-        const result = {
+        const user = {
             id: newDocRef.id,
             email: newUser.email,
         }
 
         return {
             token,
-            user: result
+            user
         };
     }
 

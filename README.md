@@ -110,18 +110,20 @@ npm run build        # Build para producción (opcional)
 ## 🚀 Despliegue
 
 ### Firebase Hosting (Frontend)
-1. Ejecutar `ng build --configuration=production`
+1. Ejecutar `ng run build --configuration=production`
+2. Instalar Firebase CLI y ejecutar:
+   ```bash
+   firebase login
+   firebase deploy
+   ```
+
+### Firebase Functions (Frontend)
+1. Ejecutar `ng run build`
 2. Instalar Firebase CLI y ejecutar:
    ```bash
    firebase login
    firebase init hosting
    firebase deploy
-   ```
-
-### Opciones para el Backend
-- Firebase Functions
-- Vercel (carpeta `api/`)
-- Render / Railway
 
 ---
 

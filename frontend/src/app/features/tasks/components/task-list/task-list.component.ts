@@ -63,7 +63,11 @@ export class TaskListComponent {
           this.taskService.updateTask(updatedTask.id, updatedTask).subscribe(() => {
             this.loadingService.hide();
           });
+        } else {
+          this.loadingService.hide();
         }
+      } else {
+        this.loadingService.hide();
       }
     });
 

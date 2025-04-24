@@ -12,7 +12,7 @@ export class AuthService {
         this.loginUser = new LoginUser(authRepository);
     }
 
-    async register(user: User): Promise<User> {
+    async register(user: User): Promise<{ token: string; user: User; }> {
         return this.registerUser.execute(user);
     }
 
